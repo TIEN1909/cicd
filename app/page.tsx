@@ -1,9 +1,13 @@
 import Image from "next/image";
+import MenuLeft from "@/components/MenuLeft";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      Học tiếng anh online miễn phí cùng AI
+    <div className="flex">
+      <MenuLeft/>
+      <div className="p-4">
+        <h1 className="text-2xl font-bold">Welcome to Ankiney Blog</h1>
+      </div>
     </div>
   );
 }
