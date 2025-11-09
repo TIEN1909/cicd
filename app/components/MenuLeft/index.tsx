@@ -1,68 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 
 const MenuLeft = () => {
+  const [activeMenu, setActiveMenu] = useState("topics");
+
+  const topics = [
+    { id: 1, name: "JavaScript Basics", icon: "📘", progress: 75 },
+    { id: 2, name: "React Fundamentals", icon: "⚛️", progress: 60 },
+    { id: 3, name: "TypeScript", icon: "📗", progress: 45 },
+    { id: 4, name: "Algorithms", icon: "🧮", progress: 30 },
+    { id: 5, name: "Data Structures", icon: "🏗️", progress: 20 }
+  ];
   return (
-    <div className="drawer drawer-open max-w-max">
-      <input id="my-drawer-4" type="checkbox" className="drawer-toggle" checked />
-      <div className="drawer-content">{/* Page content here */}</div>
+    <div className="fixed left-0 top-16 h-dvh w-80 bg-gradient-to-b from-indigo-50 to-white border-r border-indigo-100 overflow-y-auto shadow-lg">
+      <div className="p-6">
+        <div className="space-y-3">
+          {topics.map((topic) => (
+            <div
+              key={topic.id}
+              className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer border border-indigo-100 hover:border-indigo-300"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{topic.icon}</span>
+                  <span className="font-semibold text-gray-800">{topic.name}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-indigo-500 h-2 rounded-full transition-all"
+                    style={{ width: `${topic.progress}%` }}
+                  />
+                </div>
+                <span className="text-sm text-gray-600 font-medium">
+                  {topic.progress}%
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
 
-      <div className="drawer-side is-drawer-close:overflow-visible">
-        <label
-          htmlFor="my-drawer-4"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
-        <div className="is-drawer-close:w-14 is-drawer-open:w-64 bg-base-200 flex flex-col items-start min-h-full">
-          {/* Sidebar content here */}
-          <ul className="menu w-full grow">
-            {/* list item */}
-            <li>
-              <button
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Homepage"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  fill="none"
-                  stroke="currentColor"
-                  className="inline-block size-4 my-1.5"
-                >
-                  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
-                  <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                </svg>
-                <span className="is-drawer-close:hidden">Homepage</span>
-              </button>
-            </li>
+        <div className="mt-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-4 text-white">
+          <div className="flex items-center gap-2 mb-2">
+            {/* <Star className="w-5 h-5" /> */}
+            <span className="font-semibold">Streak: 7 ngày</span>
+          </div>
+          <p className="text-sm opacity-90">Tiếp tục phấn đấu!</p>
+        </div>
 
-            {/* list item */}
-            <li>
-              <button
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Settings"
+        <div className="text-indigo-900 mt-14">
+          <div className="flex justify-center gap-6 mb-4">
+            <a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="fill-current"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  fill="none"
-                  stroke="currentColor"
-                  className="inline-block size-4 my-1.5"
-                >
-                  <path d="M20 7h-9"></path>
-                  <path d="M14 17H5"></path>
-                  <circle cx="17" cy="17" r="3"></circle>
-                  <circle cx="7" cy="7" r="3"></circle>
-                </svg>
-                <span className="is-drawer-close:hidden">Settings</span>
-              </button>
-            </li>
-          </ul>
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+              </svg>
+            </a>
+            <a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="fill-current"
+              >
+                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
+              </svg>
+            </a>
+            <a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="fill-current"
+              >
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+              </svg>
+            </a>
+          </div>
+          <p className="text-center">
+            Copyright © {new Date().getFullYear()} - All right reserved by Vo Thanh Tien
+          </p>
         </div>
       </div>
     </div>
