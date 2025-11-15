@@ -14,8 +14,16 @@ import {
 } from "react-icons/fa";
 import MenuLeft from "./components/MenuLeft";
 
+interface Flashcard {
+  question: string;
+  vietnamese: string;
+  answer: string;
+  answerVi: string;
+  example: string;
+}
+
 export default function Home() {
-  const [flashcards, setFlashcards] = useState([]);
+  const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
 
@@ -91,6 +99,7 @@ export default function Home() {
   };
 
   const card = flashcards[currentFlashcard];
+  console.log("Current card:", card);
 
   return (
     <div className="flex">
@@ -202,11 +211,9 @@ export default function Home() {
                   Bài tập: Create a greeting function
                 </h3>
                 <p className="text-indigo-100 mb-1">
-                  Write a function that takes a name and returns "Hello, [name]!"
+                  Write a function that takes a name and returns Hello, [name]!
                 </p>
-                <p className="text-sm text-indigo-200">
-                  Viết một hàm nhận tên và trả về "Hello, [tên]!"
-                </p>
+                <p className="text-sm text-indigo-200">Viết một hàm nhận tên</p>
               </div>
 
               <div className="p-6">
