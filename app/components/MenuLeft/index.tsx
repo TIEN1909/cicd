@@ -40,14 +40,6 @@ const MenuLeft = () => {
           ))}
         </div>
 
-        <div className="mt-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-4 text-white">
-          <div className="flex items-center gap-2 mb-2">
-            {/* <Star className="w-5 h-5" /> */}
-            <span className="font-semibold">Streak: 7 ngày</span>
-          </div>
-          <p className="text-sm opacity-90">Tiếp tục phấn đấu!</p>
-        </div>
-
         <div className="text-indigo-900 mt-14">
           <div className="flex justify-center gap-6 mb-4">
             <a>
