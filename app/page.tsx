@@ -1,8 +1,6 @@
 "use client";
 
-import MenuLeft from "@/components/MenuLeft";
-import { useState } from "react";
-import { flashcards, quizQuestions } from "./constant";
+import { useState, useEffect } from "react";
 import {
   FaBook,
   FaCode,
@@ -14,16 +12,61 @@ import {
   FaVolumeUp,
   FaStar
 } from "react-icons/fa";
+import MenuLeft from "./components/MenuLeft";
 
 export default function Home() {
+  const [flashcards, setFlashcards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
   const [currentView, setCurrentView] = useState("flashcard");
   const [showAnswer, setShowAnswer] = useState(false);
   const [currentFlashcard, setCurrentFlashcard] = useState(0);
+
   const [code, setCode] = useState(
     "// Write your code here\nfunction greet(name) {\n  \n}"
   );
+
   const [quizAnswer, setQuizAnswer] = useState("");
   const [showResult, setShowResult] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    async function fetchFlashcards() {
+      try {
+        const res = await fetch("https://strapi-cms-7rd8.onrender.com/api/flashcards");
+        const json = await res.json();
+        console.log("Fetched Strapi data:", json);
+        const items = json.data;
+        setFlashcards(items);
+      } catch (error) {
+        console.error("Lỗi fetching Strapi:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchFlashcards();
+  }, []);
+
+  if (!isClient || loading) {
+    return (
+      <div className="p-10 text-xl font-semibold text-indigo-600">
+        Đang tải flashcards...
+      </div>
+    );
+  }
+
+  if (!flashcards.length) {
+    return (
+      <div className="p-10 text-xl font-semibold text-red-600">
+        Không có flashcards trong Strapi!
+      </div>
+    );
+  }
 
   const nextFlashcard = () => {
     setShowAnswer(false);
@@ -46,11 +89,13 @@ export default function Home() {
   const checkQuizAnswer = () => {
     setShowResult(true);
   };
+
+  const card = flashcards[currentFlashcard];
+
   return (
     <div className="flex">
       <MenuLeft />
       <div className="mt-16 ml-80 mb-16 flex-1 p-8">
-        {/* Navigation Tabs */}
         <div className="flex gap-4 mb-6">
           <button
             onClick={() => setCurrentView("flashcard")}
@@ -87,7 +132,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Flashcard View */}
         {currentView === "flashcard" && (
           <div className="max-w-3xl mx-auto">
             <div className="bg-white rounded-2xl shadow-xl p-8 min-h-[400px] flex flex-col justify-between border-2 border-indigo-100">
@@ -97,7 +141,7 @@ export default function Home() {
                     Thẻ {currentFlashcard + 1} / {flashcards.length}
                   </span>
                   <button
-                    onClick={() => speakText(flashcards[currentFlashcard].question)}
+                    onClick={() => speakText(card?.question)}
                     className="p-2 hover:bg-indigo-50 rounded-lg transition-colors"
                   >
                     <FaVolumeUp className="w-5 h-5 text-indigo-600" />
@@ -107,23 +151,19 @@ export default function Home() {
                 <div className="space-y-4">
                   <div>
                     <p className="text-2xl font-bold text-gray-800 mb-2">
-                      {flashcards[currentFlashcard].question}
+                      {card?.question}
                     </p>
-                    <p className="text-lg text-gray-600">
-                      {flashcards[currentFlashcard].vietnamese}
-                    </p>
+                    <p className="text-lg text-gray-600">{card?.vietnamese}</p>
                   </div>
 
                   {showAnswer && (
                     <div className="mt-6 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 animate-fade-in">
                       <p className="text-xl font-semibold text-green-900 mb-2">
-                        {flashcards[currentFlashcard].answer}
+                        {card?.answer}
                       </p>
-                      <p className="text-lg text-green-700 mb-4">
-                        {flashcards[currentFlashcard].answerVi}
-                      </p>
+                      <p className="text-lg text-green-700 mb-4">{card?.answerVi}</p>
                       <div className="bg-gray-800 text-green-400 p-4 rounded-lg font-mono text-sm">
-                        {flashcards[currentFlashcard].example}
+                        {card?.example}
                       </div>
                     </div>
                   )}
@@ -154,7 +194,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Coding Practice View */}
         {currentView === "coding" && (
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-indigo-100">
@@ -211,7 +250,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Quiz View */}
         {currentView === "quiz" && (
           <div className="max-w-3xl mx-auto">
             <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-indigo-100">
@@ -223,10 +261,8 @@ export default function Home() {
 
               <div className="space-y-6">
                 <div>
-                  <p className="text-2xl font-bold text-gray-800 mb-2">
-                    {quizQuestions[0].question}
-                  </p>
-                  <p className="text-lg text-gray-600">{quizQuestions[0].vietnamese}</p>
+                  <p className="text-2xl font-bold text-gray-800 mb-2">{card.question}</p>
+                  <p className="text-lg text-gray-600">{card.vietnamese}</p>
                 </div>
 
                 <div>
@@ -238,20 +274,20 @@ export default function Home() {
                     className="w-full p-4 border-2 border-gray-300 rounded-lg text-lg focus:border-indigo-500 focus:outline-none"
                   />
                   <p className="text-sm text-gray-500 mt-2">
-                    💡 Gợi ý: {quizQuestions[0].hint}
+                    💡 Gợi ý: Trả lời bằng tiếng Anh
                   </p>
                 </div>
 
                 {showResult && (
                   <div
                     className={`p-6 rounded-xl ${
-                      quizAnswer.toLowerCase().trim() === quizQuestions[0].correctAnswer
+                      quizAnswer.toLowerCase().trim() === card.answer.toLowerCase().trim()
                         ? "bg-green-50 border border-green-200"
                         : "bg-red-50 border border-red-200"
                     }`}
                   >
                     {quizAnswer.toLowerCase().trim() ===
-                    quizQuestions[0].correctAnswer ? (
+                    card.answer.toLowerCase().trim() ? (
                       <div className="flex items-center gap-3 text-green-800">
                         <FaCheck className="w-6 h-6" />
                         <span className="font-semibold text-lg">
@@ -267,7 +303,7 @@ export default function Home() {
                           </span>
                         </div>
                         <p className="text-red-700">
-                          Đáp án đúng: <strong>{quizQuestions[0].correctAnswer}</strong>
+                          Đáp án đúng: <strong>{card.answer}</strong>
                         </p>
                       </div>
                     )}
