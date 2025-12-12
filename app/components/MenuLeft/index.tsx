@@ -4,11 +4,11 @@ const MenuLeft = () => {
   const [activeMenu, setActiveMenu] = useState("topics");
 
   const topics = [
-    { id: 1, name: "JavaScript Basics", icon: "📘", progress: 75 },
-    { id: 2, name: "React Fundamentals", icon: "⚛️", progress: 60 },
-    { id: 3, name: "TypeScript", icon: "📗", progress: 45 },
-    { id: 4, name: "Algorithms", icon: "🧮", progress: 30 },
-    { id: 5, name: "Data Structures", icon: "🏗️", progress: 20 }
+    { id: 1, name: "JavaScript", icon: "📘", progress: 100 },
+    { id: 2, name: "React JS", icon: "⚛️", progress: 100 },
+    { id: 3, name: "TypeScript", icon: "📗", progress: 100 },
+    { id: 4, name: "Docker", icon: "🧮", progress: 100 },
+    { id: 5, name: "English", icon: "🏗️", progress: 100 }
   ];
   return (
     <div className="fixed left-0 top-16 h-dvh w-80 bg-gradient-to-b from-indigo-50 to-white border-r border-indigo-100 overflow-y-auto shadow-lg">
@@ -26,15 +26,12 @@ const MenuLeft = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <div className="flex-1 bg-gray-200 rounded-full h-2">
+                <div className="flex-1 bg-gray-200 rounded-full h-1">
                   <div
-                    className="bg-indigo-500 h-2 rounded-full transition-all"
+                    className="bg-indigo-500 h-1 rounded-full transition-all"
                     style={{ width: `${topic.progress}%` }}
                   />
                 </div>
-                <span className="text-sm text-gray-600 font-medium">
-                  {topic.progress}%
-                </span>
               </div>
             </div>
           ))}
@@ -64,7 +61,11 @@ const MenuLeft = () => {
                 <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
               </svg>
             </a>
-            <a>
+            <a
+              href="https://www.facebook.com/deio01/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -77,7 +78,7 @@ const MenuLeft = () => {
             </a>
           </div>
           <p className="text-center">
-            Copyright © {new Date().getFullYear()} - All right reserved by Vo Thanh Tien
+            Copyright © {new Date().getFullYear()} - All right reserved by Deio Dev
           </p>
         </div>
       </div>
